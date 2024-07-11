@@ -28,7 +28,7 @@ export default function DateRangePicker({ form }: DateRangePickerProps) {
       name="query_date_range"
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel>Start and End Date</FormLabel>
+          <FormLabel>Query Date Range</FormLabel>
           <Popover modal={true}>
             <PopoverTrigger asChild>
               <Button
@@ -50,7 +50,7 @@ export default function DateRangePicker({ form }: DateRangePickerProps) {
                     format(field.value.from, 'LLL dd, y')
                   )
                 ) : (
-                  <span>Pick a date</span>
+                  <span>From - To</span>
                 )}
               </Button>
             </PopoverTrigger>
