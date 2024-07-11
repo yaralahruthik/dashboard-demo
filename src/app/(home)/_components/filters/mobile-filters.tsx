@@ -19,7 +19,9 @@ export default function MobileFilters() {
 
   return (
     <div className="flex justify-end gap-5 px-10 lg:hidden">
-      <MobileClearFilterButton />
+      <React.Suspense>
+        <MobileClearFilterButton />
+      </React.Suspense>
 
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger onClick={() => setIsOpen(true)} asChild>
