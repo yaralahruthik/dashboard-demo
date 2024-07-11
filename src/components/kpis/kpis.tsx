@@ -15,7 +15,8 @@ async function getTicketStats() {
     .select({ value: countDistinct(usersQuery.ticketId) })
     .from(usersQuery)
     .limit(1);
-  const REJECTED = 3;
+
+  const REJECTED = 27;
 
   return {
     totalTickets: totalTickets[0].value,

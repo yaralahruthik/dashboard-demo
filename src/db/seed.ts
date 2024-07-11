@@ -14,6 +14,16 @@ function generateSeedData(count: number) {
       userQueryDate.getTime() + faker.number.int({ min: 1, max: 20 }) * 1000,
     );
 
+    const predAssignmentHelper = faker.helpers.arrayElement([
+      'plumbing',
+      'finance',
+      'human_resource',
+      'operations',
+      'admin',
+      'cleaning',
+      'other',
+    ]);
+
     seedData.push({
       userName: faker.internet.userName(),
       phoneNo: faker.phone.number(),
@@ -24,9 +34,9 @@ function generateSeedData(count: number) {
       ticketId: faker.string.uuid(),
       queryResponseBody: faker.lorem.paragraphs(),
       queryResponseDatetimeUTC: queryResponseDate,
-      predAssignment: faker.person.fullName(),
+      predAssignment: predAssignmentHelper,
       predAssignmentConfScore: faker.number
-        .float({ min: 0, max: 1, precision: 0.001 })
+        .float({ min: 0, max: 1, multipleOf: 0.01 })
         .toString(),
       predAssignmentManualFlag: faker.datatype.boolean(),
       predPriorityManualFlag: faker.datatype.boolean(),
@@ -52,7 +62,7 @@ function generateSeedData(count: number) {
   return seedData;
 }
 
-const seedData = generateSeedData(10);
+const seedData = generateSeedData(100);
 
 export async function seed() {
   await db.insert(usersQuery).values([...seedData]);
