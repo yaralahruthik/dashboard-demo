@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import DateRangePicker from './date-range-picker';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Params } from '../../types';
 
 const FiltersSchema = z
   .object({
@@ -38,17 +40,34 @@ const FiltersSchema = z
 export type FiltersFormType = z.infer<typeof FiltersSchema>;
 
 export default function FiltersForm() {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   const form = useForm<FiltersFormType>({
     resolver: zodResolver(FiltersSchema),
     defaultValues: {
       query_date_range: {
-        from: undefined,
-        to: undefined,
+        from: searchParams.get('from')
+          ? new Date(searchParams.get('from')!)
+          : undefined,
+        to: searchParams.get('to')
+          ? new Date(searchParams.get('to')!)
+          : undefined,
       },
     },
   });
 
-  const onSubmit = (data: FiltersFormType) => {};
+  const onSubmit = (data: FiltersFormType) => {
+    let params = new URLSearchParams();
+
+    if (data.query_date_range.from && data.query_date_range.to) {
+      params.set('from', data.query_date_range.from.toDateString());
+      params.set('to', data.query_date_range.to.toDateString());
+    }
+
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   const onClear = () => {
     form.reset();

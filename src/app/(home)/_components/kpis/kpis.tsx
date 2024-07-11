@@ -8,13 +8,35 @@ import {
 import { db } from '@/db';
 import { usersQuery } from '@/schema';
 import { countDistinct, eq, sql } from 'drizzle-orm';
-import SeedDataButton from '../seed-data-button';
+import { Params } from '../../types';
 
-async function getTicketStats() {
-  const totalTickets = await db
+function getDateRange(searchParams: Params['searchParams']) {
+  if (searchParams.from && searchParams.to) {
+    const from = searchParams.from;
+    const to = searchParams.to;
+
+    return { from, to };
+  }
+
+  return null;
+}
+
+async function getTicketStats(
+  dateRange: {
+    from: string;
+    to: string;
+  } | null,
+) {
+  let query = db
     .select({ value: countDistinct(usersQuery.ticketId) })
     .from(usersQuery)
-    .limit(1);
+    .where(
+      dateRange?.from && dateRange?.to
+        ? sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${dateRange.from} AND ${dateRange.to}`
+        : undefined,
+    );
+
+  const totalTickets = await query.limit(1);
 
   const REJECTED = 27;
 
@@ -65,13 +87,20 @@ async function getAverageAssignmentTime() {
   };
 }
 
-export default async function KPIs() {
-  const { totalTickets, accepted, rejected } = await getTicketStats();
-  const { value: numberOfAIAssignments } = await getNumberOfAIAssignments();
-  const { value: numberOfManualAssignments } =
-    await getNumberOfManualAssignments();
+export default async function KPIs({ searchParams }: Params) {
+  const dateRange = getDateRange(searchParams);
 
-  const { value: averageAssignmentTime } = await getAverageAssignmentTime();
+  const [
+    { totalTickets, accepted, rejected },
+    { value: numberOfAIAssignments },
+    { value: numberOfManualAssignments },
+    { value: averageAssignmentTime },
+  ] = await Promise.all([
+    getTicketStats(dateRange),
+    getNumberOfAIAssignments(dateRange),
+    getNumberOfManualAssignments(dateRange),
+    getAverageAssignmentTime(dateRange),
+  ]);
 
   return (
     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
