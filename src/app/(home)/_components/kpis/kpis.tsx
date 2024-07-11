@@ -8,28 +8,17 @@ import {
 import { db } from '@/db';
 import { usersQuery } from '@/schema';
 import { and, countDistinct, eq, sql } from 'drizzle-orm';
-import { DateRange, Params } from '../../types';
-
-function getDateRange(searchParams: Params['searchParams']) {
-  if (searchParams.from && searchParams.to) {
-    const from = searchParams.from;
-    const to = searchParams.to;
-
-    return { from, to };
-  }
-
-  return null;
-}
+import { DateRange, Params } from '../../_types';
+import {
+  getDateRangeFromSearchParams,
+  getUserQueryDateRangeSQL,
+} from '../../_utils';
 
 async function getTicketStats(dateRange: DateRange) {
   let query = db
     .select({ value: countDistinct(usersQuery.ticketId) })
     .from(usersQuery)
-    .where(
-      dateRange?.from && dateRange?.to
-        ? sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${dateRange.from} AND ${dateRange.to}`
-        : undefined,
-    );
+    .where(getUserQueryDateRangeSQL(dateRange));
 
   const totalTickets = await query.limit(1);
 
@@ -50,9 +39,7 @@ async function getNumberOfAIAssignments(dateRange: DateRange) {
       .where(
         and(
           eq(usersQuery.predAssignmentManualFlag, false),
-          dateRange?.from && dateRange?.to
-            ? sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${dateRange.from} AND ${dateRange.to}`
-            : undefined,
+          getUserQueryDateRangeSQL(dateRange),
         ),
       )
       .limit(1)
@@ -67,9 +54,7 @@ async function getNumberOfManualAssignments(dateRange: DateRange) {
       .where(
         and(
           eq(usersQuery.predAssignmentManualFlag, true),
-          dateRange?.from && dateRange?.to
-            ? sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${dateRange.from} AND ${dateRange.to}`
-            : undefined,
+          getUserQueryDateRangeSQL(dateRange),
         ),
       )
       .limit(1)
@@ -88,9 +73,7 @@ async function getAverageAssignmentTime(dateRange: DateRange) {
     .where(
       and(
         sql`${usersQuery.queryResponseDatetimeUTC} IS NOT NULL AND ${usersQuery.userQueryDatetimeUTC} IS NOT NULL`,
-        dateRange?.from && dateRange?.to
-          ? sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${dateRange.from} AND ${dateRange.to}`
-          : undefined,
+        getUserQueryDateRangeSQL(dateRange),
       ),
     );
 
@@ -102,7 +85,7 @@ async function getAverageAssignmentTime(dateRange: DateRange) {
 }
 
 export default async function KPIs({ searchParams }: Params) {
-  const dateRange = getDateRange(searchParams);
+  const dateRange = getDateRangeFromSearchParams(searchParams);
 
   const [
     { totalTickets, accepted, rejected },

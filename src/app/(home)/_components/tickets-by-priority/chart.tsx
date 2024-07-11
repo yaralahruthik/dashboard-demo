@@ -18,14 +18,14 @@ import {
 type ChartProps = {
   dataPoints: {
     count: number;
-    manualPriority: string;
+    predPriority: string;
   }[];
 };
 
 export default function Chart({ dataPoints }: ChartProps) {
   const dataPointsWithFill = dataPoints.map((item) => ({
     ...item,
-    fill: `var(--color-${convertSpacesToUnderscoresAndLowercase(item.manualPriority)})`,
+    fill: `var(--color-${convertSpacesToUnderscoresAndLowercase(item.predPriority)})`,
   }));
 
   return (
@@ -40,7 +40,7 @@ export default function Chart({ dataPoints }: ChartProps) {
       >
         <CartesianGrid vertical={false} />
         <XAxis
-          dataKey="manualPriority"
+          dataKey="predPriority"
           tickLine={false}
           tickMargin={10}
           axisLine={false}

@@ -24,6 +24,11 @@ export const usersQuery = pgTable('user_query', {
     precision: 10,
     scale: 3,
   }),
+  predPriority: varchar('pred_priority', { length: 255 }),
+  predPriorityConfScore: numeric('pred_priority_conf_score', {
+    precision: 10,
+    scale: 3,
+  }),
   predAssignmentManualFlag: boolean('pred_assignment_manual_flag'),
   predPriorityManualFlag: boolean('pred_priority_manual_flag'),
   manualAssignment: varchar('manual_assignment', { length: 255 }),

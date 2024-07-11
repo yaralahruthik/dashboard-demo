@@ -1,0 +1,172 @@
+{
+  "id": "b4c4cfd9-2890-4f5e-bf38-7c94a53097bf",
+  "prevId": "4b6092a8-011d-4c7d-8737-f5a9dc216afc",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.user_query": {
+      "name": "user_query",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_name": {
+          "name": "user_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone_no": {
+          "name": "phone_no",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_query_body": {
+          "name": "user_query_body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_query_mode": {
+          "name": "user_query_mode",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_query_datetime_utc": {
+          "name": "user_query_datetime_utc",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_query_flag": {
+          "name": "is_query_flag",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ticket_id": {
+          "name": "ticket_id",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "query_response_body": {
+          "name": "query_response_body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "query_response_datetime_utc": {
+          "name": "query_response_datetime_utc",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pred_assignment": {
+          "name": "pred_assignment",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pred_assignment_conf_score": {
+          "name": "pred_assignment_conf_score",
+          "type": "numeric(10, 3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pred_priority": {
+          "name": "pred_priority",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pred_priority_conf_score": {
+          "name": "pred_priority_conf_score",
+          "type": "numeric(10, 3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pred_assignment_manual_flag": {
+          "name": "pred_assignment_manual_flag",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pred_priority_manual_flag": {
+          "name": "pred_priority_manual_flag",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "manual_assignment": {
+          "name": "manual_assignment",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "manual_assignment_datetime_utc": {
+          "name": "manual_assignment_datetime_utc",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "manual_priority": {
+          "name": "manual_priority",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "manual_priority_datetime_utc": {
+          "name": "manual_priority_datetime_utc",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ticket_status": {
+          "name": "ticket_status",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Open'"
+        },
+        "ticket_status_closed_datetime_utc": {
+          "name": "ticket_status_closed_datetime_utc",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "comments": {
+          "name": "comments",
+          "type": "varchar(1500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "executive": {
+          "name": "executive",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Unassigned'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

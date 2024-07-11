@@ -2,22 +2,34 @@ import { cache } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { db } from '@/db';
 import { usersQuery } from '@/schema';
-import { countDistinct, isNotNull } from 'drizzle-orm';
+import { and, countDistinct, isNotNull } from 'drizzle-orm';
 import Chart from './chart';
+import { DateRange, Params } from '../../_types';
+import {
+  getDateRangeFromSearchParams,
+  getUserQueryDateRangeSQL,
+} from '../../_utils';
 
-const getTicketsByPriority = cache(async () => {
+const getTicketsByPriority = cache(async (dateRange: DateRange) => {
   return await db
     .select({
       count: countDistinct(usersQuery.ticketId),
-      manualPriority: usersQuery.manualPriority,
+      predPriority: usersQuery.predPriority,
     })
     .from(usersQuery)
-    .where(isNotNull(usersQuery.manualPriority))
-    .groupBy(usersQuery.manualPriority);
+    .where(
+      and(
+        isNotNull(usersQuery.predPriority),
+        getUserQueryDateRangeSQL(dateRange),
+      ),
+    )
+    .groupBy(usersQuery.predPriority);
 });
 
-export default async function TicketsByPriority() {
-  const ticketsByPriority = await getTicketsByPriority();
+export default async function TicketsByPriority({ searchParams }: Params) {
+  const dateRange = getDateRangeFromSearchParams(searchParams);
+
+  const ticketsByPriority = await getTicketsByPriority(dateRange);
 
   return (
     <Card>
@@ -27,8 +39,8 @@ export default async function TicketsByPriority() {
       <CardContent className="space-y-4">
         <Chart
           dataPoints={ticketsByPriority.filter(
-            (item): item is { count: number; manualPriority: string } =>
-              item.manualPriority !== null,
+            (item): item is { count: number; predPriority: string } =>
+              item.predPriority !== null,
           )}
         />
       </CardContent>

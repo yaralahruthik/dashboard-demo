@@ -39,6 +39,10 @@ function generateSeedData(count: number) {
         .float({ min: 0, max: 1, multipleOf: 0.01 })
         .toString(),
       predAssignmentManualFlag: faker.datatype.boolean(),
+      predPriority: faker.helpers.arrayElement(['Low', 'Medium', 'High']),
+      predPriorityConfScore: faker.number
+        .float({ min: 0, max: 1, multipleOf: 0.01 })
+        .toString(),
       predPriorityManualFlag: faker.datatype.boolean(),
       manualAssignment: faker.person.fullName(),
       manualAssignmentDatetimeUTC: faker.date.recent(),
