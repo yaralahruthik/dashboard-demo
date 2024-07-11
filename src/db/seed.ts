@@ -3,21 +3,27 @@
 import { faker } from '@faker-js/faker';
 import { db } from '.';
 import { usersQuery } from '@/schema';
+import { revalidatePath } from 'next/cache';
 
 function generateSeedData(count: number) {
   const seedData = [];
 
   for (let i = 0; i < count; i++) {
+    const userQueryDate = faker.date.past();
+    const queryResponseDate = new Date(
+      userQueryDate.getTime() + faker.number.int({ min: 1, max: 20 }) * 1000,
+    );
+
     seedData.push({
       userName: faker.internet.userName(),
       phoneNo: faker.phone.number(),
       userQueryBody: faker.lorem.paragraph(),
       userQueryMode: faker.helpers.arrayElement(['email', 'phone', 'chat']),
-      userQueryDatetimeUTC: faker.date.past(),
+      userQueryDatetimeUTC: userQueryDate,
       isQueryFlag: faker.datatype.boolean(),
       ticketId: faker.string.uuid(),
       queryResponseBody: faker.lorem.paragraphs(),
-      queryResponseDatetimeUTC: faker.date.recent(),
+      queryResponseDatetimeUTC: queryResponseDate,
       predAssignment: faker.person.fullName(),
       predAssignmentConfScore: faker.number
         .float({ min: 0, max: 1, precision: 0.001 })
@@ -27,7 +33,7 @@ function generateSeedData(count: number) {
       manualAssignment: faker.person.fullName(),
       manualAssignmentDatetimeUTC: faker.date.recent(),
       manualPriority: faker.helpers.arrayElement(['Low', 'Medium', 'High']),
-      manualPriorityDatetimeUTC: faker.date.recent(),
+      manualPrioryDatetimeUTC: faker.date.recent(),
       ticketStatus: faker.helpers.arrayElement([
         'Open',
         'Closed',
@@ -50,4 +56,5 @@ const seedData = generateSeedData(10);
 
 export async function seed() {
   await db.insert(usersQuery).values([...seedData]);
+  revalidatePath('/');
 }
