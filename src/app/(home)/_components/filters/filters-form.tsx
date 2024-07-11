@@ -6,8 +6,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import DateRangePicker from './date-range-picker';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Params } from '../../types';
+import useDashboardFilters from '../../_hooks/use-dashboard-filters';
 
 const FiltersSchema = z
   .object({
@@ -39,21 +38,19 @@ const FiltersSchema = z
 
 export type FiltersFormType = z.infer<typeof FiltersSchema>;
 
-export default function FiltersForm() {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
+type FiltersFormProps = {
+  postApply?: () => void;
+};
+
+export default function FiltersForm({ postApply }: FiltersFormProps) {
+  const { applyFilters, clearFilters, getFilters } = useDashboardFilters();
 
   const form = useForm<FiltersFormType>({
     resolver: zodResolver(FiltersSchema),
     defaultValues: {
       query_date_range: {
-        from: searchParams.get('from')
-          ? new Date(searchParams.get('from')!)
-          : undefined,
-        to: searchParams.get('to')
-          ? new Date(searchParams.get('to')!)
-          : undefined,
+        from: getFilters()?.from ? new Date(getFilters().from) : undefined,
+        to: getFilters()?.to ? new Date(getFilters().to) : undefined,
       },
     },
   });
@@ -66,12 +63,21 @@ export default function FiltersForm() {
       params.set('to', data.query_date_range.to.toDateString());
     }
 
-    replace(`${pathname}?${params.toString()}`);
+    applyFilters(params.toString());
+
+    if (postApply) {
+      postApply();
+    }
   };
 
   const onClear = () => {
-    form.reset();
-    replace(`${pathname}`);
+    form.reset({
+      query_date_range: {
+        from: undefined,
+        to: undefined,
+      },
+    });
+    clearFilters();
   };
 
   return (

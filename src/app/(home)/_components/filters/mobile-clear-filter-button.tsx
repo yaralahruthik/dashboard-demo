@@ -1,10 +1,10 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import useFilters from '../../_hooks/use-filters';
+import useDashboardFilters from '../../_hooks/use-dashboard-filters';
 
 export default function MobileClearFilterButton() {
-  const { arefiltersApplied, clearFilters } = useFilters();
+  const { arefiltersApplied, clearFilters } = useDashboardFilters();
 
   if (!arefiltersApplied) return null;
 
