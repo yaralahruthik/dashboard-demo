@@ -4,3 +4,8 @@ export type Params = {
     to?: string;
   };
 };
+
+export type DateRange = {
+  from: string;
+  to: string;
+} | null;

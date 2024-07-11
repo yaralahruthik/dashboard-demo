@@ -7,8 +7,8 @@ import {
 } from '@/components/ui/card';
 import { db } from '@/db';
 import { usersQuery } from '@/schema';
-import { countDistinct, eq, sql } from 'drizzle-orm';
-import { Params } from '../../types';
+import { and, countDistinct, eq, sql } from 'drizzle-orm';
+import { DateRange, Params } from '../../types';
 
 function getDateRange(searchParams: Params['searchParams']) {
   if (searchParams.from && searchParams.to) {
@@ -21,12 +21,7 @@ function getDateRange(searchParams: Params['searchParams']) {
   return null;
 }
 
-async function getTicketStats(
-  dateRange: {
-    from: string;
-    to: string;
-  } | null,
-) {
+async function getTicketStats(dateRange: DateRange) {
   let query = db
     .select({ value: countDistinct(usersQuery.ticketId) })
     .from(usersQuery)
@@ -47,27 +42,41 @@ async function getTicketStats(
   };
 }
 
-async function getNumberOfAIAssignments() {
+async function getNumberOfAIAssignments(dateRange: DateRange) {
   return (
     await db
       .select({ value: countDistinct(usersQuery.ticketId) })
       .from(usersQuery)
-      .where(eq(usersQuery.predAssignmentManualFlag, false))
+      .where(
+        and(
+          eq(usersQuery.predAssignmentManualFlag, false),
+          dateRange?.from && dateRange?.to
+            ? sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${dateRange.from} AND ${dateRange.to}`
+            : undefined,
+        ),
+      )
       .limit(1)
   )[0];
 }
 
-async function getNumberOfManualAssignments() {
+async function getNumberOfManualAssignments(dateRange: DateRange) {
   return (
     await db
       .select({ value: countDistinct(usersQuery.ticketId) })
       .from(usersQuery)
-      .where(eq(usersQuery.predAssignmentManualFlag, true))
+      .where(
+        and(
+          eq(usersQuery.predAssignmentManualFlag, true),
+          dateRange?.from && dateRange?.to
+            ? sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${dateRange.from} AND ${dateRange.to}`
+            : undefined,
+        ),
+      )
       .limit(1)
   )[0];
 }
 
-async function getAverageAssignmentTime() {
+async function getAverageAssignmentTime(dateRange: DateRange) {
   const result = await db
     .select({
       value: sql<number>`
@@ -77,7 +86,12 @@ async function getAverageAssignmentTime() {
     })
     .from(usersQuery)
     .where(
-      sql`${usersQuery.queryResponseDatetimeUTC} IS NOT NULL AND ${usersQuery.userQueryDatetimeUTC} IS NOT NULL`,
+      and(
+        sql`${usersQuery.queryResponseDatetimeUTC} IS NOT NULL AND ${usersQuery.userQueryDatetimeUTC} IS NOT NULL`,
+        dateRange?.from && dateRange?.to
+          ? sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${dateRange.from} AND ${dateRange.to}`
+          : undefined,
+      ),
     );
 
   const average = result[0].value || 0;

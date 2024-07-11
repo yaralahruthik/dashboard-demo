@@ -71,6 +71,7 @@ export default function FiltersForm() {
 
   const onClear = () => {
     form.reset();
+    replace(`${pathname}`);
   };
 
   return (
