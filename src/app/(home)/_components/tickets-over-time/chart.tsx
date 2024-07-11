@@ -3,47 +3,29 @@
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { COLORS } from '@/utils/colors';
+import { CHART_CONFIG } from '@/utils/chartConfig';
 
-function getChartConfig(assignments: string[]): ChartConfig {
-  return Object.fromEntries(
-    assignments.map((assignment, index) => [
-      assignment.toLowerCase(),
-      {
-        label: assignment,
-        theme: {
-          dark: COLORS[index][0],
-          light: COLORS[index][1],
-        },
-      },
-    ]),
-  );
-}
+const chartData = [
+  { week: 1, admin: 186, cleaning: 80 },
+  { week: 2, admin: 305, cleaning: 200 },
+  { week: 3, admin: 237, cleaning: 120 },
+  { week: 4, admin: 73, cleaning: 190 },
+  { week: 5, admin: 209, cleaning: 130 },
+  { week: 6, admin: 214, cleaning: 140 },
+];
 
-type ChartProps = {
-  predAssignments: string[];
-  dataPoints: {
-    userQueryDatetimeUTC: Date | null;
-    ticketId: string | null;
-    predAssignment: string | null;
-  }[];
-};
-
-export default function Chart({ predAssignments, dataPoints }: ChartProps) {
-  const chartConfig = getChartConfig(predAssignments);
-
+export default function Chart() {
   return (
-    <ChartContainer className="max-h-80 min-h-60 w-full" config={chartConfig}>
+    <ChartContainer config={CHART_CONFIG}>
       <LineChart
         accessibilityLayer
-        data={dataPoints}
+        data={chartData}
         margin={{
           left: 12,
           right: 12,
@@ -51,38 +33,34 @@ export default function Chart({ predAssignments, dataPoints }: ChartProps) {
       >
         <CartesianGrid vertical={false} />
         <XAxis
-          dataKey="userQueryDatetimeUTC"
+          dataKey="week"
           tickLine={false}
           axisLine={false}
-          tickMargin={10}
-          label={{
-            value: 'Week Number',
-            position: 'bottom',
-          }}
+          tickMargin={8}
+          label={{ value: 'Week Number', position: 'bottom' }}
         />
         <YAxis
           tickLine={false}
           axisLine={false}
-          tickMargin={10}
-          dataKey="ticketId"
-          label={{
-            value: 'Tickets',
-            angle: -90,
-            position: 'left',
-          }}
+          tickMargin={8}
+          label={{ value: 'Ticket Count', angle: -90, position: 'left' }}
         />
         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-        <ChartLegend className="mt-4" content={<ChartLegendContent />} />
-        {predAssignments.map((assignment) => (
-          <Line
-            key={assignment}
-            dataKey="ticketId"
-            type="monotone"
-            stroke={`var(--color-${assignment})`}
-            strokeWidth={2}
-            dot={false}
-          />
-        ))}
+        <ChartLegend className="mt-2" content={<ChartLegendContent />} />
+        <Line
+          dataKey="admin"
+          type="monotone"
+          stroke="var(--color-admin)"
+          strokeWidth={2}
+          dot={false}
+        />
+        <Line
+          dataKey="cleaning"
+          type="monotone"
+          stroke="var(--color-cleaning)"
+          strokeWidth={2}
+          dot={false}
+        />
       </LineChart>
     </ChartContainer>
   );

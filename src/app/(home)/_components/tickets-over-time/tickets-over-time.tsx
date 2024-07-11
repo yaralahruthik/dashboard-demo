@@ -1,48 +1,47 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { db } from '@/db';
-import { and, isNotNull } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { usersQuery } from '@/schema';
 import Chart from './chart';
+import { cache } from 'react';
 
-async function getTicketsOverTime() {
-  const dataPoints = await db.query.usersQuery.findMany({
-    where: and(
-      isNotNull(usersQuery.queryResponseDatetimeUTC),
-      isNotNull(usersQuery.ticketId),
-      isNotNull(usersQuery.predAssignment),
-    ),
-    columns: {
-      userQueryDatetimeUTC: true,
-      ticketId: true,
-      predAssignment: true,
-    },
-  });
+const getTicketsOverTime = cache(async () => {
+  const ticketsOverTime = await db.execute(sql`
+    WITH weekly_data AS (
+      SELECT
+        DATE_PART('week', ${usersQuery.userQueryDatetimeUTC}) AS week,
+        ${usersQuery.predAssignment} AS pred_assignment,
+        COUNT(DISTINCT ${usersQuery.ticketId}) AS new_tickets
+      FROM ${usersQuery}
+      WHERE 
+        ${usersQuery.ticketId} IS NOT NULL
+        AND ${usersQuery.predAssignment} IS NOT NULL
+      GROUP BY 
+        DATE_PART('week', ${usersQuery.userQueryDatetimeUTC}),
+        ${usersQuery.predAssignment}
+    )
+    SELECT 
+      pred_assignment,
+      SUM(new_tickets) AS total_tickets,
+      week
+    FROM weekly_data
+    GROUP BY pred_assignment, week
+    ORDER BY pred_assignment, week
+  `);
 
-  const predAssignments = new Set(
-    dataPoints.map(({ predAssignment }) => predAssignment),
-  );
-
-  return {
-    predAssignments: Array.from(predAssignments),
-    dataPoints,
-  };
-}
+  return ticketsOverTime.map((row) => ({
+    predAssignment: row.pred_assignment as string,
+    totalTickets: Number(row.total_tickets),
+    week: Number(row.week),
+  }));
+});
 
 export default async function TicketsOverTime() {
-  // const [selectedAssignments, setSelectedAssignments] = React.useState([
-  //   assignments[0],
-  // ]);
-
   const ticketsOverTime = await getTicketsOverTime();
+
+  const predAssignments = Array.from(
+    new Set(ticketsOverTime.map((item) => item.predAssignment)),
+  );
 
   return (
     <Card>
@@ -51,32 +50,10 @@ export default async function TicketsOverTime() {
       </CardHeader>
       <CardContent className="space-y-4">
         <Chart
-          predAssignments={ticketsOverTime.predAssignments.filter(
-            (item) => item !== null,
-          )}
-          dataPoints={ticketsOverTime.dataPoints}
+          predAssignments={predAssignments.filter((item) => item !== null)}
+          dataPoints={ticketsOverTime}
         />
       </CardContent>
-      {/* <CardFooter>
-        <div className="mx-auto grid grid-cols-2 gap-2 md:grid-cols-3">
-          {assignments.map((assignment) => (
-            <div key={assignment} className="flex items-center space-x-2">
-              <Checkbox
-                checked={selectedAssignments.includes(assignment)}
-                onCheckedChange={() =>
-                  setSelectedAssignments(
-                    selectedAssignments.includes(assignment)
-                      ? selectedAssignments.filter((a) => a !== assignment)
-                      : [...selectedAssignments, assignment],
-                  )
-                }
-                id={assignment}
-              />
-              <Label htmlFor={assignment}>{assignment}</Label>
-            </div>
-          ))}
-        </div>
-      </CardFooter> */}
     </Card>
   );
 }
