@@ -97,7 +97,8 @@ export default async function KPIs() {
         <CardHeader className="h-full justify-between">
           <CardDescription>Average Assignment Time Per Ticket</CardDescription>
           <CardTitle className="text-4xl">
-            {(+averageAssignmentTime).toPrecision(3)} Seconds
+            {(+averageAssignmentTime).toPrecision(3)}{' '}
+            <span className="text-lg">Seconds</span>
           </CardTitle>
         </CardHeader>
       </Card>
