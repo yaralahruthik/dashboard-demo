@@ -40,7 +40,7 @@ export default function AssignedDepartment({ form }: AssignedDepartmentProps) {
           {isLoading ? (
             <Skeleton className="h-10 w-full" />
           ) : (
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="Select Assigned Department" />

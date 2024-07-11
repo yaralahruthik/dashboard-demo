@@ -61,10 +61,10 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
         from: getFilters('from') ? new Date(getFilters('from')!) : undefined,
         to: getFilters('to') ? new Date(getFilters('to')!) : undefined,
       },
-      priority: getFilters('priority'),
-      ticket_id: getFilters('ticket_id'),
-      assignment: getFilters('assignment'),
-      contact: getFilters('contact'),
+      priority: getFilters('priority') ?? '',
+      ticket_id: getFilters('ticket_id') ?? '',
+      assignment: getFilters('assignment') ?? '',
+      contact: getFilters('contact') ?? '',
     },
   });
 
@@ -105,10 +105,10 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
         from: undefined,
         to: undefined,
       },
-      priority: undefined,
-      ticket_id: undefined,
-      assignment: undefined,
-      contact: undefined,
+      priority: '',
+      ticket_id: '',
+      assignment: '',
+      contact: '',
     });
     clearFilters();
   };

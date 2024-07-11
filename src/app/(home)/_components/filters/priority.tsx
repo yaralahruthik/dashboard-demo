@@ -27,7 +27,7 @@ export default function Priority({ form }: PriorityProps) {
       render={({ field }) => (
         <FormItem>
           <FormLabel>Priority</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select onValueChange={field.onChange} value={field.value}>
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder="Select Ticket Priority" />

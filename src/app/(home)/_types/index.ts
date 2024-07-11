@@ -2,6 +2,10 @@ export type Params = {
   searchParams: {
     from?: string;
     to?: string;
+    priority?: string;
+    ticket_id?: string;
+    assignment?: string;
+    contact?: string;
   };
 };
 
