@@ -8,17 +8,18 @@ import {
 import { db } from '@/db';
 import { usersQuery } from '@/schema';
 import { and, countDistinct, eq, sql } from 'drizzle-orm';
-import { DateRange, Params } from '../../_types';
+import { Filters, Params } from '../../_types';
 import {
-  getDateRangeFromSearchParams,
+  constructFiltersSQL,
+  getFiltersFromSearchParams,
   getUserQueryDateRangeSQL,
 } from '../../_utils';
 
-async function getTicketStats(dateRange: DateRange) {
+async function getTicketStats(filters: Filters) {
   let query = db
     .select({ value: countDistinct(usersQuery.ticketId) })
     .from(usersQuery)
-    .where(getUserQueryDateRangeSQL(dateRange));
+    .where(constructFiltersSQL(filters));
 
   const totalTickets = await query.limit(1);
 
@@ -31,7 +32,7 @@ async function getTicketStats(dateRange: DateRange) {
   };
 }
 
-async function getNumberOfAIAssignments(dateRange: DateRange) {
+async function getNumberOfAIAssignments(filters: Filters) {
   return (
     await db
       .select({ value: countDistinct(usersQuery.ticketId) })
@@ -39,14 +40,14 @@ async function getNumberOfAIAssignments(dateRange: DateRange) {
       .where(
         and(
           eq(usersQuery.predAssignmentManualFlag, false),
-          getUserQueryDateRangeSQL(dateRange),
+          constructFiltersSQL(filters),
         ),
       )
       .limit(1)
   )[0];
 }
 
-async function getNumberOfManualAssignments(dateRange: DateRange) {
+async function getNumberOfManualAssignments(filters: Filters) {
   return (
     await db
       .select({ value: countDistinct(usersQuery.ticketId) })
@@ -54,14 +55,14 @@ async function getNumberOfManualAssignments(dateRange: DateRange) {
       .where(
         and(
           eq(usersQuery.predAssignmentManualFlag, true),
-          getUserQueryDateRangeSQL(dateRange),
+          getUserQueryDateRangeSQL(filters.dateRange),
         ),
       )
       .limit(1)
   )[0];
 }
 
-async function getAverageAssignmentTime(dateRange: DateRange) {
+async function getAverageAssignmentTime(filters: Filters) {
   const result = await db
     .select({
       value: sql<number>`
@@ -73,7 +74,7 @@ async function getAverageAssignmentTime(dateRange: DateRange) {
     .where(
       and(
         sql`${usersQuery.queryResponseDatetimeUTC} IS NOT NULL AND ${usersQuery.userQueryDatetimeUTC} IS NOT NULL`,
-        getUserQueryDateRangeSQL(dateRange),
+        constructFiltersSQL(filters),
       ),
     );
 
@@ -85,7 +86,7 @@ async function getAverageAssignmentTime(dateRange: DateRange) {
 }
 
 export default async function KPIs({ searchParams }: Params) {
-  const dateRange = getDateRangeFromSearchParams(searchParams);
+  const filters = getFiltersFromSearchParams(searchParams);
 
   const [
     { totalTickets, accepted, rejected },
@@ -93,10 +94,10 @@ export default async function KPIs({ searchParams }: Params) {
     { value: numberOfManualAssignments },
     { value: averageAssignmentTime },
   ] = await Promise.all([
-    getTicketStats(dateRange),
-    getNumberOfAIAssignments(dateRange),
-    getNumberOfManualAssignments(dateRange),
-    getAverageAssignmentTime(dateRange),
+    getTicketStats(filters),
+    getNumberOfAIAssignments(filters),
+    getNumberOfManualAssignments(filters),
+    getAverageAssignmentTime(filters),
   ]);
 
   return (

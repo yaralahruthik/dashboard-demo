@@ -24,7 +24,11 @@ type ContactModeProps = {
 };
 
 function useContactModes() {
-  return useSWR('contact-modes', getContactModes);
+  return useSWR('contact-modes', getContactModes, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
 }
 
 export default function ContactMode({ form }: ContactModeProps) {
@@ -33,7 +37,7 @@ export default function ContactMode({ form }: ContactModeProps) {
   return (
     <FormField
       control={form.control}
-      name="assignment"
+      name="contact"
       render={({ field }) => (
         <FormItem>
           <FormLabel>Contact Mode</FormLabel>

@@ -24,7 +24,11 @@ type AssignedDepartmentProps = {
 };
 
 function useAssignedDepartments() {
-  return useSWR('assigned-departments', getAssignedDepartments);
+  return useSWR('assigned-departments', getAssignedDepartments, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
 }
 
 export default function AssignedDepartment({ form }: AssignedDepartmentProps) {

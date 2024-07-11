@@ -61,10 +61,10 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
         from: getFilters('from') ? new Date(getFilters('from')!) : undefined,
         to: getFilters('to') ? new Date(getFilters('to')!) : undefined,
       },
-      priority: getFilters('priority') ?? '',
-      ticket_id: getFilters('ticket_id') ?? '',
-      assignment: getFilters('assignment') ?? '',
-      contact: getFilters('contact') ?? '',
+      priority: getFilters('priority') || '',
+      ticket_id: getFilters('ticket_id') || '',
+      assignment: getFilters('assignment') || '',
+      contact: getFilters('contact') || '',
     },
   });
 
@@ -123,10 +123,10 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
         <ContactMode form={form} />
 
         <div className="flex justify-between">
-          <Button onClick={onClear} variant="secondary">
+          <Button type="button" onClick={onClear} variant="secondary">
             Clear
           </Button>
-          <Button type="submit">Apply</Button>
+          <Button>Apply</Button>
         </div>
       </form>
     </Form>

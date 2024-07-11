@@ -13,3 +13,11 @@ export type DateRange = {
   from: string;
   to: string;
 } | null;
+
+export type Filters = {
+  dateRange?: DateRange;
+  priority?: string;
+  ticketId?: string;
+  assignment?: string;
+  contact?: string;
+};
