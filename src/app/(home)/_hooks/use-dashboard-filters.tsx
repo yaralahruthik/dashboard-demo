@@ -6,7 +6,13 @@ export default function useDashboardFilters() {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
 
-  const arefiltersApplied = searchParams.get('from') || searchParams.get('to');
+  const arefiltersApplied =
+    searchParams.get('from') ||
+    searchParams.get('to') ||
+    searchParams.get('priority') ||
+    searchParams.get('ticket_id') ||
+    searchParams.get('assignment') ||
+    searchParams.get('contact');
 
   const clearFilters = React.useCallback(() => {
     replace(`${pathname}`);
@@ -19,15 +25,12 @@ export default function useDashboardFilters() {
     [pathname, replace],
   );
 
-  const getFilters = React.useCallback(() => {
-    const params: Record<string, string> = {};
-    if (searchParams.get('from') && searchParams.get('to')) {
-      params['from'] = searchParams.get('from')!;
-      params['to'] = searchParams.get('to')!;
-    }
-
-    return params;
-  }, [searchParams]);
+  const getFilters = React.useCallback(
+    (param: string) => {
+      return searchParams.get(param) || undefined;
+    },
+    [searchParams],
+  );
 
   return { arefiltersApplied, clearFilters, applyFilters, getFilters };
 }

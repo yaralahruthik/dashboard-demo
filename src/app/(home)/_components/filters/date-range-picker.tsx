@@ -56,12 +56,16 @@ export default function DateRangePicker({ form }: DateRangePickerProps) {
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="center">
               <Calendar
+                id="calendar"
                 initialFocus
                 mode="range"
                 selected={{
                   from: field.value?.from,
                   to: field.value?.to,
                 }}
+                disabled={(date) =>
+                  date > new Date() || date < new Date('1900-01-01')
+                }
                 onSelect={field.onChange}
                 numberOfMonths={2}
               />

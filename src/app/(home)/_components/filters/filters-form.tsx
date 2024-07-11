@@ -8,12 +8,21 @@ import { Button } from '@/components/ui/button';
 import DateRangePicker from './date-range-picker';
 import useDashboardFilters from '../../_hooks/use-dashboard-filters';
 
+import Priority from './priority';
+import AssignedDepartment from './assigned-department';
+import ContactMode from './contact-mode';
+import TicketInput from './ticket-input';
+
 const FiltersSchema = z
   .object({
     query_date_range: z.object({
       from: z.date().optional(),
       to: z.date().optional(),
     }),
+    priority: z.string().trim().optional(),
+    ticket_id: z.string().trim().optional(),
+    assignment: z.string().trim().optional(),
+    contact: z.string().trim().optional(),
   })
   .refine(
     (data) => {
@@ -49,9 +58,13 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
     resolver: zodResolver(FiltersSchema),
     defaultValues: {
       query_date_range: {
-        from: getFilters()?.from ? new Date(getFilters().from) : undefined,
-        to: getFilters()?.to ? new Date(getFilters().to) : undefined,
+        from: getFilters('from') ? new Date(getFilters('from')!) : undefined,
+        to: getFilters('to') ? new Date(getFilters('to')!) : undefined,
       },
+      priority: getFilters('priority'),
+      ticket_id: getFilters('ticket_id'),
+      assignment: getFilters('assignment'),
+      contact: getFilters('contact'),
     },
   });
 
@@ -61,6 +74,22 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
     if (data.query_date_range.from && data.query_date_range.to) {
       params.set('from', data.query_date_range.from.toDateString());
       params.set('to', data.query_date_range.to.toDateString());
+    }
+
+    if (data.priority) {
+      params.set('priority', data.priority);
+    }
+
+    if (data.ticket_id) {
+      params.set('ticket_id', data.ticket_id);
+    }
+
+    if (data.assignment) {
+      params.set('assignment', data.assignment);
+    }
+
+    if (data.contact) {
+      params.set('contact', data.contact);
     }
 
     applyFilters(params.toString());
@@ -76,6 +105,10 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
         from: undefined,
         to: undefined,
       },
+      priority: undefined,
+      ticket_id: undefined,
+      assignment: undefined,
+      contact: undefined,
     });
     clearFilters();
   };
@@ -84,6 +117,11 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <DateRangePicker form={form} />
+        <Priority form={form} />
+        <TicketInput form={form} />
+        <AssignedDepartment form={form} />
+        <ContactMode form={form} />
+
         <div className="flex justify-between">
           <Button onClick={onClear} variant="secondary">
             Clear
