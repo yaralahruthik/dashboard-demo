@@ -75,7 +75,6 @@ export default async function KPIs() {
 
   return (
     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-      <SeedDataButton />
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardDescription>Total Number of Tickets</CardDescription>

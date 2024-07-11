@@ -1,16 +1,11 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { cache } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { db } from '@/db';
 import { usersQuery } from '@/schema';
 import { countDistinct, isNotNull } from 'drizzle-orm';
 import Chart from './chart';
 
-async function getTicketsByAIAssignment() {
+const getTicketsByAIAssignment = cache(async () => {
   return await db
     .select({
       count: countDistinct(usersQuery.ticketId),
@@ -19,7 +14,7 @@ async function getTicketsByAIAssignment() {
     .from(usersQuery)
     .where(isNotNull(usersQuery.predAssignment))
     .groupBy(usersQuery.predAssignment);
-}
+});
 
 export default async function TicketsByAIAssignment() {
   const ticketsByAIAssignment = await getTicketsByAIAssignment();

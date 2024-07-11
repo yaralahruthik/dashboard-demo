@@ -13,6 +13,9 @@ const keys = [
   'high',
   'low',
   'medium',
+  'chat',
+  'email',
+  'phone',
 ];
 
 export const CHART_CONFIG: ChartConfig = Object.fromEntries(

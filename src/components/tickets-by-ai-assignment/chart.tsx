@@ -3,7 +3,6 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -60,9 +59,7 @@ export default function Chart({ dataPoints }: ChartProps) {
         />
         <Bar dataKey="count" />
         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-        <ChartLegend
-          content={<ChartLegendContent nameKey="predAssignment" />}
-        />
+        <ChartLegend content={<ChartLegendContent />} />
       </BarChart>
     </ChartContainer>
   );

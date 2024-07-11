@@ -59,9 +59,7 @@ export default function Chart({ dataPoints }: ChartProps) {
         />
         <Bar dataKey="count" />
         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-        <ChartLegend
-          content={<ChartLegendContent nameKey="manualPriority" />}
-        />
+        <ChartLegend content={<ChartLegendContent />} />
       </BarChart>
     </ChartContainer>
   );
