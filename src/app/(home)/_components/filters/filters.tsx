@@ -1,10 +1,12 @@
+import DesktopFilters from './desktop-filters';
 import FiltersForm from './filters-form';
+import MobileFilters from './mobile-filters';
 
 export default function Filters() {
   return (
-    <div className="space-y-4">
-      <span className="text-2xl">Filters</span>
-      <FiltersForm />
-    </div>
+    <>
+      <DesktopFilters />
+      <MobileFilters />
+    </>
   );
 }
