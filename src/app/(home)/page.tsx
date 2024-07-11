@@ -6,7 +6,7 @@ import TicketsOverTime from '@/components/tickets-over-time';
 
 export default function Home() {
   return (
-    <main className="container flex flex-col gap-10 pb-10">
+    <div className="flex flex-col gap-10 pb-10">
       <KPIs />
       {/* <TicketsOverTime /> */}
       <TicketsByAIAssignment />
@@ -14,6 +14,6 @@ export default function Home() {
         <TicketsByPriority />
         <TicketsByContactMode />
       </div>
-    </main>
+    </div>
   );
 }
