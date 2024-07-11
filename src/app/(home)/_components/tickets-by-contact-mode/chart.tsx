@@ -14,7 +14,7 @@ import { convertSpacesToUnderscoresAndLowercase } from '@/utils/formatKey';
 
 type ChartProps = {
   dataPoints: {
-    count: number;
+    percentage: number;
     userQueryMode: string;
   }[];
 };
@@ -31,8 +31,9 @@ export default function Chart({ dataPoints }: ChartProps) {
         <ChartTooltip content={<ChartTooltipContent />} />
         <Pie
           data={dataPointsWithFill}
-          dataKey="count"
+          dataKey="percentage"
           nameKey="userQueryMode"
+          label={(value) => `${value.percentage}%`}
         />
         <ChartLegend content={<ChartLegendContent nameKey="userQueryMode" />} />
       </PieChart>

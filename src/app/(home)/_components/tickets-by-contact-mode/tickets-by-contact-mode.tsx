@@ -11,9 +11,9 @@ import {
 } from '../../_utils';
 
 const getTicketsByContactMode = cache(async (dateRange: DateRange) => {
-  return await db
+  const results = await db
     .select({
-      count: countDistinct(usersQuery.ticketId),
+      count: countDistinct(usersQuery.ticketId).as('count'),
       userQueryMode: usersQuery.userQueryMode,
     })
     .from(usersQuery)
@@ -24,6 +24,13 @@ const getTicketsByContactMode = cache(async (dateRange: DateRange) => {
       ),
     )
     .groupBy(usersQuery.userQueryMode);
+
+  const totalCount = results.reduce((sum, row) => sum + row.count, 0);
+
+  return results.map((row) => ({
+    userQueryMode: row.userQueryMode,
+    percentage: +((row.count / totalCount) * 100).toFixed(2),
+  }));
 });
 
 export default async function TicketsByContactMode({ searchParams }: Params) {
@@ -39,7 +46,7 @@ export default async function TicketsByContactMode({ searchParams }: Params) {
       <CardContent className="space-y-4">
         <Chart
           dataPoints={ticketsByContactMode.filter(
-            (item): item is { count: number; userQueryMode: string } =>
+            (item): item is { percentage: number; userQueryMode: string } =>
               item.userQueryMode !== null,
           )}
         />
