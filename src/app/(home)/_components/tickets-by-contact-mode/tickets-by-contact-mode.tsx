@@ -4,13 +4,10 @@ import { usersQuery } from '@/schema';
 import { and, countDistinct, isNotNull } from 'drizzle-orm';
 import Chart from './chart';
 import { cache } from 'react';
-import { DateRange, Params } from '../../_types';
-import {
-  getDateRangeFromSearchParams,
-  getUserQueryDateRangeSQL,
-} from '../../_utils';
+import { Filters, Params } from '../../_types';
+import { constructFiltersSQL, getFiltersFromSearchParams } from '../../_utils';
 
-const getTicketsByContactMode = cache(async (dateRange: DateRange) => {
+const getTicketsByContactMode = cache(async (filters: Filters) => {
   const results = await db
     .select({
       count: countDistinct(usersQuery.ticketId).as('count'),
@@ -18,10 +15,7 @@ const getTicketsByContactMode = cache(async (dateRange: DateRange) => {
     })
     .from(usersQuery)
     .where(
-      and(
-        isNotNull(usersQuery.userQueryMode),
-        getUserQueryDateRangeSQL(dateRange),
-      ),
+      and(isNotNull(usersQuery.userQueryMode), constructFiltersSQL(filters)),
     )
     .groupBy(usersQuery.userQueryMode);
 
@@ -34,9 +28,9 @@ const getTicketsByContactMode = cache(async (dateRange: DateRange) => {
 });
 
 export default async function TicketsByContactMode({ searchParams }: Params) {
-  const dateRange = getDateRangeFromSearchParams(searchParams);
+  const filters = getFiltersFromSearchParams(searchParams);
 
-  const ticketsByContactMode = await getTicketsByContactMode(dateRange);
+  const ticketsByContactMode = await getTicketsByContactMode(filters);
 
   return (
     <Card>

@@ -4,13 +4,10 @@ import { db } from '@/db';
 import { usersQuery } from '@/schema';
 import { and, countDistinct, isNotNull } from 'drizzle-orm';
 import Chart from './chart';
-import { DateRange, Params } from '../../_types';
-import {
-  getDateRangeFromSearchParams,
-  getUserQueryDateRangeSQL,
-} from '../../_utils';
+import { Filters, Params } from '../../_types';
+import { constructFiltersSQL, getFiltersFromSearchParams } from '../../_utils';
 
-const getTicketsByAIAssignment = cache(async (dateRange: DateRange) => {
+const getTicketsByAIAssignment = cache(async (filters: Filters) => {
   return await db
     .select({
       count: countDistinct(usersQuery.ticketId),
@@ -18,18 +15,15 @@ const getTicketsByAIAssignment = cache(async (dateRange: DateRange) => {
     })
     .from(usersQuery)
     .where(
-      and(
-        isNotNull(usersQuery.predAssignment),
-        getUserQueryDateRangeSQL(dateRange),
-      ),
+      and(isNotNull(usersQuery.predAssignment), constructFiltersSQL(filters)),
     )
     .groupBy(usersQuery.predAssignment);
 });
 
 export default async function TicketsByAIAssignment({ searchParams }: Params) {
-  const dateRange = getDateRangeFromSearchParams(searchParams);
+  const filters = getFiltersFromSearchParams(searchParams);
 
-  const ticketsByAIAssignment = await getTicketsByAIAssignment(dateRange);
+  const ticketsByAIAssignment = await getTicketsByAIAssignment(filters);
 
   return (
     <Card>
