@@ -1,7 +1,3 @@
-'use client';
-
-import React from 'react';
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import {
   Card,
   CardContent,
@@ -11,47 +7,42 @@ import {
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart';
-import { COLORS } from '@/utils/colors';
-import { TICKETS_OVER_TIME_DATA } from '@/utils/mock-data';
 
-const assignments = [
-  'plumbing',
-  'finance',
-  'human_resource',
-  'operations',
-  'admin',
-  'cleaning',
-];
+import { db } from '@/db';
+import { and, isNotNull } from 'drizzle-orm';
+import { usersQuery } from '@/schema';
+import Chart from './chart';
 
-function getChartConfig(assignments: string[]): ChartConfig {
-  return Object.fromEntries(
-    assignments.map((assignment, index) => [
-      assignment.toLowerCase(),
-      {
-        label: assignment,
-        theme: {
-          dark: COLORS[index][0],
-          light: COLORS[index][1],
-        },
-      },
-    ]),
+async function getTicketsOverTime() {
+  const dataPoints = await db.query.usersQuery.findMany({
+    where: and(
+      isNotNull(usersQuery.queryResponseDatetimeUTC),
+      isNotNull(usersQuery.ticketId),
+      isNotNull(usersQuery.predAssignment),
+    ),
+    columns: {
+      userQueryDatetimeUTC: true,
+      ticketId: true,
+      predAssignment: true,
+    },
+  });
+
+  const predAssignments = new Set(
+    dataPoints.map(({ predAssignment }) => predAssignment),
   );
+
+  return {
+    predAssignments: Array.from(predAssignments),
+    dataPoints,
+  };
 }
 
-export default function TicketsOverTime() {
-  const [selectedAssignments, setSelectedAssignments] = React.useState([
-    assignments[0],
-  ]);
+export default async function TicketsOverTime() {
+  // const [selectedAssignments, setSelectedAssignments] = React.useState([
+  //   assignments[0],
+  // ]);
 
-  const chartConfig = getChartConfig(selectedAssignments);
+  const ticketsOverTime = await getTicketsOverTime();
 
   return (
     <Card>
@@ -59,55 +50,14 @@ export default function TicketsOverTime() {
         <CardTitle>Tickets Over Time</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <ChartContainer
-          className="max-h-80 min-h-60 w-full"
-          config={chartConfig}
-        >
-          <LineChart
-            accessibilityLayer
-            data={TICKETS_OVER_TIME_DATA}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="week"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-              label={{
-                value: 'Week Number',
-                position: 'bottom',
-              }}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-              label={{
-                value: 'Tickets',
-                angle: -90,
-                position: 'left',
-              }}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <ChartLegend className="mt-4" content={<ChartLegendContent />} />
-            {selectedAssignments.map((assignment) => (
-              <Line
-                key={assignment}
-                dataKey={assignment}
-                type="monotone"
-                stroke={`var(--color-${assignment})`}
-                strokeWidth={2}
-                dot={false}
-              />
-            ))}
-          </LineChart>
-        </ChartContainer>
+        <Chart
+          predAssignments={ticketsOverTime.predAssignments.filter(
+            (item) => item !== null,
+          )}
+          dataPoints={ticketsOverTime.dataPoints}
+        />
       </CardContent>
-      <CardFooter>
+      {/* <CardFooter>
         <div className="mx-auto grid grid-cols-2 gap-2 md:grid-cols-3">
           {assignments.map((assignment) => (
             <div key={assignment} className="flex items-center space-x-2">
@@ -126,7 +76,7 @@ export default function TicketsOverTime() {
             </div>
           ))}
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }
