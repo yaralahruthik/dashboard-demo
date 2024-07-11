@@ -17,18 +17,21 @@ import {
 
 async function getTicketStats(filters: Filters) {
   let query = db
-    .select({ value: countDistinct(usersQuery.ticketId) })
+    .select({
+      total: countDistinct(usersQuery.ticketId),
+      accepted: countDistinct(
+        sql`CASE WHEN ${usersQuery.isQueryFlag} THEN ${usersQuery.ticketId} ELSE NULL END`,
+      ),
+    })
     .from(usersQuery)
     .where(constructFiltersSQL(filters));
 
   const totalTickets = await query.limit(1);
 
-  const REJECTED = 27;
-
   return {
-    totalTickets: totalTickets[0].value,
-    accepted: totalTickets[0].value - REJECTED,
-    rejected: REJECTED,
+    totalTickets: totalTickets[0].total,
+    accepted: totalTickets[0].accepted,
+    rejected: totalTickets[0].total - totalTickets[0].accepted,
   };
 }
 

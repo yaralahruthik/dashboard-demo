@@ -30,7 +30,7 @@ function generateSeedData(count: number) {
       userQueryBody: faker.lorem.paragraph(),
       userQueryMode: faker.helpers.arrayElement(['email', 'phone', 'chat']),
       userQueryDatetimeUTC: userQueryDate,
-      isQueryFlag: faker.datatype.boolean(),
+      isQueryFlag: faker.datatype.boolean({ probability: 0.8 }),
       ticketId: faker.string.uuid(),
       queryResponseBody: faker.lorem.paragraphs(),
       queryResponseDatetimeUTC: queryResponseDate,
