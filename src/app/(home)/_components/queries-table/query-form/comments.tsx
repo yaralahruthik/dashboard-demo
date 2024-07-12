@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/form';
 import { UseFormReturn } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
-import { QueryUpdateDataType } from './update-schema';
+import { QueryUpdateDataType } from '../update-schema';
 
 type CommentsProps = {
   form: UseFormReturn<QueryUpdateDataType>;

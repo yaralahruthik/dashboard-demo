@@ -15,10 +15,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { UseFormReturn } from 'react-hook-form';
-import { getAssignedDepartments } from '../../_actions';
+import { getAssignedDepartments } from '../../../_actions';
 import { convertUnderscoresToSpacesAndCapitalize } from '@/utils/text';
 import { Skeleton } from '@/components/ui/skeleton';
-import { QueryUpdateDataType } from './update-schema';
+import { QueryUpdateDataType } from '../update-schema';
 
 type AssignedDepartmentProps = {
   form: UseFormReturn<QueryUpdateDataType>;

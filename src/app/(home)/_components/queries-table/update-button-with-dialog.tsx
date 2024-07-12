@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { QueryDataRow } from './get-queries-data';
 import { Button } from '@/components/ui/button';
-import QueryUpdateForm from './query-update-form';
+import QueryUpdateForm from './query-form/query-update-form';
 import React from 'react';
 
 type UpdateButtonWithDialogProps = {

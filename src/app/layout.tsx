@@ -3,8 +3,13 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import ThemeProvider from '@/components/theme-provider';
 import Header from '@/components/header';
+import { cn } from '@/lib/utils';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,7 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={cn(
+          'flex h-screen flex-col bg-background font-sans text-foreground antialiased',
+          inter.variable,
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -26,7 +36,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          {children}
+          <div className="flex flex-1 flex-col">{children}</div>
         </ThemeProvider>
       </body>
     </html>

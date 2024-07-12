@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -29,6 +28,7 @@ export default async function QueriesTable({ searchParams }: Params) {
             <TableRow>
               <TableHead>Ticket ID</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Executive</TableHead>
               <TableHead>Predicted Priority</TableHead>
               <TableHead>Predicted Assignment</TableHead>
               <TableHead>User Query Mode</TableHead>

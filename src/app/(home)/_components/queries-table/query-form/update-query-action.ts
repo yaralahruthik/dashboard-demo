@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/db';
-import { QueryUpdateDataType, QueryUpdateSchema } from './update-schema';
+import { QueryUpdateDataType, QueryUpdateSchema } from '../update-schema';
 import { usersQuery } from '@/schema';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
@@ -18,6 +18,7 @@ export async function updateQueryAction(
   await db
     .update(usersQuery)
     .set({
+      ticketStatus: parsedData.data.status,
       manualAssignment: parsedData.data.assignment,
       manualAssignmentDatetimeUTC: parsedData.data.assignment
         ? new Date()

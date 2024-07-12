@@ -7,7 +7,7 @@ import { Params } from './_types';
 
 export default function Home({ searchParams }: Params) {
   return (
-    <div className="flex flex-col gap-10 pb-10">
+    <div className="flex flex-col gap-10 px-10 pb-10">
       <KPIs searchParams={searchParams} />
       <TicketsByAIAssignment searchParams={searchParams} />
       <div className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2">

@@ -1,5 +1,6 @@
+import { format } from 'date-fns';
+
 export const convertUnderscoresToSpacesAndCapitalize = (key: string) => {
-  // Convert underscores to spaces and capitalize each word
   return key
     .replace(/_/g, ' ')
     .split(' ')
@@ -8,7 +9,6 @@ export const convertUnderscoresToSpacesAndCapitalize = (key: string) => {
 };
 
 export const convertSpacesToUnderscoresAndLowercase = (key: string) => {
-  // Convert spaces and lowercase each word
   return key
     .replace(/ /g, '_')
     .split('_')
@@ -22,4 +22,15 @@ export const formatTextForTable = (key: string | null) => {
   }
 
   return convertUnderscoresToSpacesAndCapitalize(key);
+};
+
+export const formatDateForTable = (key: Date | null) => {
+  if (!key) {
+    return null;
+  }
+
+  return {
+    date: format(key, 'do MMM yyyy'),
+    time: format(key, 'HH:mm:ss'),
+  };
 };

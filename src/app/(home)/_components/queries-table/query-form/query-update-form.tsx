@@ -2,13 +2,14 @@ import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
-import { QueryDataRow } from './get-queries-data';
+import { QueryDataRow } from '../get-queries-data';
 import Priority from './priority';
 import AssignedDepartment from './assigned-department';
 import { formatTextForTable } from '@/utils/text';
 import Comments from './comments';
-import { QueryUpdateDataType, QueryUpdateSchema } from './update-schema';
+import { QueryUpdateDataType, QueryUpdateSchema } from '../update-schema';
 import { updateQueryAction } from './update-query-action';
+import TicketStatus from './ticket-status';
 
 type QueryUpdateFormProps = {
   query: QueryDataRow;
@@ -25,6 +26,7 @@ export default function QueryUpdateForm({
       priority: query.manualPriority || '',
       assignment: query.manualAssignment || '',
       comments: query.comments || '',
+      status: query.ticketStatus || '',
     },
   });
 
@@ -41,6 +43,8 @@ export default function QueryUpdateForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <TicketStatus form={form} />
+
         <Priority
           form={form}
           description={

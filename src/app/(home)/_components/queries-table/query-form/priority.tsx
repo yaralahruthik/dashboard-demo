@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { UseFormReturn } from 'react-hook-form';
-import { QueryUpdateDataType } from './update-schema';
+import { QueryUpdateDataType } from '../update-schema';
 
 type PriorityProps = {
   form: UseFormReturn<QueryUpdateDataType>;
