@@ -18,7 +18,7 @@ export default function MobileFilters() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <div className="flex justify-end gap-5 px-10 lg:hidden">
+    <div className="flex justify-end gap-5 px-10 xl:hidden">
       <React.Suspense>
         <MobileClearFilterButton />
       </React.Suspense>
