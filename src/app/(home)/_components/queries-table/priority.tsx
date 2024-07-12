@@ -14,10 +14,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { UseFormReturn } from 'react-hook-form';
-import { QueryUpdateFormType } from './query-update-form';
+import { QueryUpdateDataType } from './update-schema';
 
 type PriorityProps = {
-  form: UseFormReturn<QueryUpdateFormType>;
+  form: UseFormReturn<QueryUpdateDataType>;
   description?: React.ReactNode;
 };
 

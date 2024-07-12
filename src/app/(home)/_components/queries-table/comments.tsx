@@ -6,11 +6,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { UseFormReturn } from 'react-hook-form';
-import { QueryUpdateFormType } from './query-update-form';
 import { Textarea } from '@/components/ui/textarea';
+import { QueryUpdateDataType } from './update-schema';
 
 type CommentsProps = {
-  form: UseFormReturn<QueryUpdateFormType>;
+  form: UseFormReturn<QueryUpdateDataType>;
 };
 
 export default function Comments({ form }: CommentsProps) {

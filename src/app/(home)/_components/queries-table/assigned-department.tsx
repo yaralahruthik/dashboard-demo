@@ -18,10 +18,10 @@ import { UseFormReturn } from 'react-hook-form';
 import { getAssignedDepartments } from '../../_actions';
 import { convertUnderscoresToSpacesAndCapitalize } from '@/utils/text';
 import { Skeleton } from '@/components/ui/skeleton';
-import { QueryUpdateFormType } from './query-update-form';
+import { QueryUpdateDataType } from './update-schema';
 
 type AssignedDepartmentProps = {
-  form: UseFormReturn<QueryUpdateFormType>;
+  form: UseFormReturn<QueryUpdateDataType>;
   description?: React.ReactNode;
 };
 
