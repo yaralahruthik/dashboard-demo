@@ -67,7 +67,7 @@ export default function QueryUpdateForm({
           <Button type="button" onClick={onClose} variant="secondary">
             Cancel
           </Button>
-          <Button>Update</Button>
+          <Button disabled={form.formState.isSubmitting}>Update</Button>
         </div>
       </form>
     </Form>
