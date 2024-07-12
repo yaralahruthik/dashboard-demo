@@ -44,10 +44,10 @@ function generateSeedData(count: number) {
         .float({ min: 0, max: 1, multipleOf: 0.01 })
         .toString(),
       predPriorityManualFlag: faker.datatype.boolean(),
-      manualAssignment: faker.person.fullName(),
-      manualAssignmentDatetimeUTC: faker.date.recent(),
-      manualPriority: faker.helpers.arrayElement(['Low', 'Medium', 'High']),
-      manualPrioryDatetimeUTC: faker.date.recent(),
+      manualAssignment: null,
+      manualAssignmentDatetimeUTC: null,
+      manualPriority: null,
+      manualPrioryDatetimeUTC: null,
       ticketStatus: faker.helpers.arrayElement([
         'Open',
         'Closed',

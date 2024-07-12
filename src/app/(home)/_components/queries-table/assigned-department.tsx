@@ -1,6 +1,7 @@
 import useSWR from 'swr';
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,51 +15,51 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { UseFormReturn } from 'react-hook-form';
-import { FiltersFormType } from './filters-form';
-import { getContactModes } from '../../_actions';
+import { getAssignedDepartments } from '../../_actions';
 import { convertUnderscoresToSpacesAndCapitalize } from '@/utils/text';
 import { Skeleton } from '@/components/ui/skeleton';
+import { QueryUpdateFormType } from './query-update-form';
 
-type ContactModeProps = {
-  form: UseFormReturn<FiltersFormType>;
+type AssignedDepartmentProps = {
+  form: UseFormReturn<QueryUpdateFormType>;
+  description?: React.ReactNode;
 };
 
-function useContactModes() {
-  return useSWR('contact-modes', getContactModes, {
+function useAssignedDepartments() {
+  return useSWR('assigned-departments', getAssignedDepartments, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
 }
 
-export default function ContactMode({ form }: ContactModeProps) {
-  const { data, isLoading } = useContactModes();
+export default function AssignedDepartment({
+  form,
+  description,
+}: AssignedDepartmentProps) {
+  const { data, isLoading } = useAssignedDepartments();
 
   return (
     <FormField
       control={form.control}
-      name="contact"
+      name="assignment"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Contact Mode</FormLabel>
+          <FormLabel>Assigned Department</FormLabel>
+          {description && <FormDescription>{description}</FormDescription>}
           {isLoading ? (
             <Skeleton className="h-10 w-full" />
           ) : (
             <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select Contact Mode" />
+                  <SelectValue placeholder="Select Assigned Department" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {data?.map((contactMode) => (
-                  <SelectItem
-                    key={contactMode.value}
-                    value={contactMode.value!}
-                  >
-                    {convertUnderscoresToSpacesAndCapitalize(
-                      contactMode.value!,
-                    )}
+                {data?.map((department) => (
+                  <SelectItem key={department.value} value={department.value!}>
+                    {convertUnderscoresToSpacesAndCapitalize(department.value!)}
                   </SelectItem>
                 ))}
               </SelectContent>

@@ -9,11 +9,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { CHART_CONFIG } from '@/utils/chartConfig';
+import { CHART_CONFIG } from '@/utils/chart-config';
 import {
   convertSpacesToUnderscoresAndLowercase,
-  covertUnderscoresToSpacesAndCapitalize,
-} from '@/utils/formatKey';
+  convertUnderscoresToSpacesAndCapitalize,
+} from '@/utils/text';
 
 type ChartProps = {
   dataPoints: {
@@ -44,7 +44,7 @@ export default function Chart({ dataPoints }: ChartProps) {
           tickLine={false}
           tickMargin={10}
           axisLine={false}
-          tickFormatter={covertUnderscoresToSpacesAndCapitalize}
+          tickFormatter={convertUnderscoresToSpacesAndCapitalize}
         />
         <YAxis
           tickLine={false}

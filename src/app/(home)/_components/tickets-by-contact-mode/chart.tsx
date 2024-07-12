@@ -9,8 +9,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { CHART_CONFIG } from '@/utils/chartConfig';
-import { convertSpacesToUnderscoresAndLowercase } from '@/utils/formatKey';
+import { CHART_CONFIG } from '@/utils/chart-config';
+import { convertSpacesToUnderscoresAndLowercase } from '@/utils/text';
 
 type ChartProps = {
   dataPoints: {

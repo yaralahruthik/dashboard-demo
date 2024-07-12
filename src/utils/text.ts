@@ -1,4 +1,4 @@
-export const covertUnderscoresToSpacesAndCapitalize = (key: string) => {
+export const convertUnderscoresToSpacesAndCapitalize = (key: string) => {
   // Convert underscores to spaces and capitalize each word
   return key
     .replace(/_/g, ' ')
@@ -14,4 +14,12 @@ export const convertSpacesToUnderscoresAndLowercase = (key: string) => {
     .split('_')
     .map((word) => word.toLowerCase())
     .join('_');
+};
+
+export const formatTextForTable = (key: string | null) => {
+  if (!key) {
+    return '-';
+  }
+
+  return convertUnderscoresToSpacesAndCapitalize(key);
 };

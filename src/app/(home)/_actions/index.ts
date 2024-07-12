@@ -4,10 +4,17 @@ import { db } from '@/db';
 import { usersQuery } from '@/schema';
 
 export async function getAssignedDepartments() {
-  return await db
-    .selectDistinct({ value: usersQuery.predAssignment })
-    .from(usersQuery)
-    .orderBy(usersQuery.predAssignment);
+  return [
+    'plumbing',
+    'finance',
+    'human_resource',
+    'operations',
+    'admin',
+    'cleaning',
+    'other',
+  ]
+    .sort()
+    .map((department) => ({ value: department }));
 }
 
 export async function getContactModes() {

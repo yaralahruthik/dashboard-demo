@@ -15,12 +15,16 @@ export default function useDashboardFilters() {
     searchParams.get('contact');
 
   const clearFilters = React.useCallback(() => {
-    replace(`${pathname}`);
+    replace(`${pathname}`, {
+      scroll: false,
+    });
   }, [pathname, replace]);
 
   const applyFilters = React.useCallback(
     (filters: string) => {
-      replace(`${pathname}?${filters}`);
+      replace(`${pathname}?${filters}`, {
+        scroll: false,
+      });
     },
     [pathname, replace],
   );

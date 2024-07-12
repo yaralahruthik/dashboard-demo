@@ -1,4 +1,5 @@
 import KPIs from './_components/kpis';
+import QueriesTable from './_components/queries-table';
 import TicketsByAIAssignment from './_components/tickets-by-ai-assignment';
 import TicketsByContactMode from './_components/tickets-by-contact-mode';
 import TicketsByPriority from './_components/tickets-by-priority';
@@ -13,6 +14,7 @@ export default function Home({ searchParams }: Params) {
         <TicketsByPriority searchParams={searchParams} />
         <TicketsByContactMode searchParams={searchParams} />
       </div>
+      <QueriesTable searchParams={searchParams} />
     </div>
   );
 }

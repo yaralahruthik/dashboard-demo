@@ -16,7 +16,7 @@ import {
 import { UseFormReturn } from 'react-hook-form';
 import { FiltersFormType } from './filters-form';
 import { getAssignedDepartments } from '../../_actions';
-import { covertUnderscoresToSpacesAndCapitalize } from '@/utils/formatKey';
+import { convertUnderscoresToSpacesAndCapitalize } from '@/utils/text';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type AssignedDepartmentProps = {
@@ -53,7 +53,7 @@ export default function AssignedDepartment({ form }: AssignedDepartmentProps) {
               <SelectContent>
                 {data?.map((department) => (
                   <SelectItem key={department.value} value={department.value!}>
-                    {covertUnderscoresToSpacesAndCapitalize(department.value!)}
+                    {convertUnderscoresToSpacesAndCapitalize(department.value!)}
                   </SelectItem>
                 ))}
               </SelectContent>
