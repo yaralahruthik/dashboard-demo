@@ -1,24 +1,45 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Getting Started (Normal Route)
 
-First, run the development server:
+1. Set up the environment variable in .env or .env.local
+
+```bash
+DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres
+```
+
+2.. Install the Dependencies.
+
+```bash
+npm install
+```
+
+3. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Getting Started (Docker Route)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Build the docker file.
+
+2. Run the docker file with the required environment variable `DATABASE_URL`
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Libraries/Systems Used In This Project
+
+- [Next.js App Router](https://nextjs.org/docs/app)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Drizzle ORM](https://orm.drizzle.team/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [ShadCN for Charts and UI components](https://ui.shadcn.com/docs) and the charts core API itself is from [Recharts](https://recharts.org/en-US/)
+- [Forms](https://www.react-hook-form.com/)
+- [Dates](https://date-fns.org/)
+- [Validations](https://zod.dev/)
 
 ## Learn More
 
