@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export async function updateQueryAction(
-  data: QueryUpdateDataType & { id: number },
+  data: QueryUpdateDataType & { ticketId: string },
 ) {
   const parsedData = QueryUpdateSchema.safeParse(data);
 
@@ -27,7 +27,7 @@ export async function updateQueryAction(
       manualPriorityDatetimeUTC: parsedData.data.priority ? new Date() : null,
       comments: parsedData.data.comments,
     })
-    .where(eq(usersQuery.id, data.id));
+    .where(eq(usersQuery.ticketId, data.ticketId));
 
   revalidatePath('/');
 }

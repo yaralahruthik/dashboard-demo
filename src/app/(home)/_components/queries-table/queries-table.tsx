@@ -39,7 +39,7 @@ export default async function QueriesTable({ searchParams }: Params) {
           </TableHeader>
           <TableBody>
             {queriesData.map((query) => (
-              <QueryTableRow key={query.id} query={query} />
+              <QueryTableRow key={query.ticketId} query={query} />
             ))}
           </TableBody>
         </Table>

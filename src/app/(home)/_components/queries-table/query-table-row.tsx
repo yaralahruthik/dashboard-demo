@@ -15,7 +15,7 @@ type QueryTableRowProps = {
 
 export default function QueryTableRow({ query }: QueryTableRowProps) {
   return (
-    <TableRow key={query.id}>
+    <TableRow key={query.ticketId}>
       <TableCell>#{query.ticketId?.slice(0, 8)}</TableCell>
       <TableCell>{formatTextForTable(query.ticketStatus)}</TableCell>
       <TableCell>{formatTextForTable(query.executive)}</TableCell>

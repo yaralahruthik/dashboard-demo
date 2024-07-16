@@ -32,7 +32,7 @@ export default function QueryUpdateForm({
 
   const onSubmit = async (data: QueryUpdateDataType) => {
     try {
-      await updateQueryAction({ ...data, id: query.id });
+      await updateQueryAction({ ...data, ticketId: query.ticketId });
       onClose();
     } catch (error) {
       const err = error as Error;

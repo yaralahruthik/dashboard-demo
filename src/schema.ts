@@ -9,14 +9,13 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const usersQuery = pgTable('user_query', {
-  id: serial('id').primaryKey(),
   userName: varchar('user_name', { length: 50 }),
   phoneNo: varchar('phone_no', { length: 50 }),
   userQueryBody: text('user_query_body'),
   userQueryMode: varchar('user_query_mode', { length: 50 }),
   userQueryDatetimeUTC: timestamp('user_query_datetime_utc'),
   isQueryFlag: boolean('is_query_flag'),
-  ticketId: varchar('ticket_id', { length: 50 }),
+  ticketId: varchar('ticket_id', { length: 50 }).primaryKey(),
   queryResponseBody: text('query_response_body'),
   queryResponseDatetimeUTC: timestamp('query_response_datetime_utc'),
   predAssignment: varchar('pred_assignment', { length: 255 }),
