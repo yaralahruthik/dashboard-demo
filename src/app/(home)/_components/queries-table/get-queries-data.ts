@@ -8,7 +8,6 @@ import { Filters } from '../../_types';
 export const getQueriesData = cache(async (filters: Filters) => {
   return db.query.usersQuery.findMany({
     columns: {
-      id: true,
       ticketId: true,
       ticketStatus: true,
       userName: true,
