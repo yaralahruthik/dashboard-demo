@@ -1,4 +1,5 @@
 import { and, sql } from 'drizzle-orm';
+import { addDays } from 'date-fns';
 import { DateRange, Filters, Params } from '../_types';
 import { usersQuery } from '@/schema';
 
@@ -28,8 +29,21 @@ export function getFiltersFromSearchParams(
 }
 
 export function getUserQueryDateRangeSQL(dateRange?: DateRange | null) {
+  if (!dateRange?.from || !dateRange?.to) {
+    return undefined;
+  }
+
+  if (dateRange.from === dateRange.to) {
+    const fromDate = new Date(dateRange.from);
+    const toDate = addDays(fromDate, 1);
+    return sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${fromDate.toDateString()} AND ${toDate.toDateString()}`;
+  }
+
+  const fromDate = new Date(dateRange.from);
+  const toDate = addDays(dateRange.to, 1);
+
   return dateRange?.from && dateRange?.to
-    ? sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${dateRange.from} AND ${dateRange.to}`
+    ? sql`${usersQuery.userQueryDatetimeUTC} BETWEEN ${fromDate.toDateString()} AND ${toDate.toDateString()}`
     : undefined;
 }
 

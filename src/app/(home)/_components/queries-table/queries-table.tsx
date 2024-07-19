@@ -29,8 +29,8 @@ export default async function QueriesTable({ searchParams }: Params) {
               <TableHead>Ticket ID</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Executive</TableHead>
-              <TableHead>Predicted Priority</TableHead>
-              <TableHead>Predicted Assignment</TableHead>
+              <TableHead>A.I Priority</TableHead>
+              <TableHead>A.I Assignment</TableHead>
               <TableHead>User Query Mode</TableHead>
               <TableHead>Manual Priority</TableHead>
               <TableHead>Manual Assignment</TableHead>
