@@ -51,16 +51,19 @@ export default function ContactMode({ form }: ContactModeProps) {
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {data?.map((contactMode) => (
-                  <SelectItem
-                    key={contactMode.value}
-                    value={contactMode.value!}
-                  >
-                    {convertUnderscoresToSpacesAndCapitalize(
-                      contactMode.value!,
-                    )}
-                  </SelectItem>
-                ))}
+                {data?.map(
+                  (contactMode) =>
+                    contactMode.value && (
+                      <SelectItem
+                        key={contactMode.value}
+                        value={contactMode.value}
+                      >
+                        {convertUnderscoresToSpacesAndCapitalize(
+                          contactMode.value,
+                        )}
+                      </SelectItem>
+                    ),
+                )}
               </SelectContent>
             </Select>
           )}
