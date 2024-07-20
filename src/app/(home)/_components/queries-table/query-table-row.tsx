@@ -11,11 +11,13 @@ import {
 
 type QueryTableRowProps = {
   query: QueryDataRow;
+  idx: number;
 };
 
-export default function QueryTableRow({ query }: QueryTableRowProps) {
+export default function QueryTableRow({ query, idx }: QueryTableRowProps) {
   return (
     <TableRow key={query.ticketId}>
+      <TableCell>{idx}</TableCell>
       <TableCell>{query.ticketId}</TableCell>
       <TableCell>{formatTextForTable(query.ticketStatus)}</TableCell>
       <TableCell>{formatTextForTable(query.executive)}</TableCell>
