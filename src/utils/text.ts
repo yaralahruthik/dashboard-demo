@@ -34,3 +34,11 @@ export const formatDateForTable = (key: Date | null) => {
     time: format(key, 'HH:mm:ss'),
   };
 };
+
+export const formatNumbersForKPIs = (value: number): string => {
+  if (value < 1000) {
+    return value.toString();
+  }
+
+  return (value / 1000).toFixed(1) + 'K';
+};

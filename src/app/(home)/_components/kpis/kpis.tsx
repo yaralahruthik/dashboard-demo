@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/card';
 import { db } from '@/db';
 import { usersQuery } from '@/schema';
+import { formatNumbersForKPIs } from '@/utils/text';
 import { and, countDistinct, eq, sql } from 'drizzle-orm';
 import { Filters, Params } from '../../_types';
 import {
@@ -108,17 +109,19 @@ export default async function KPIs({ searchParams }: Params) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardDescription>Total Number of Tickets</CardDescription>
-          <CardTitle className="text-4xl">{totalTickets}</CardTitle>
+          <CardTitle className="text-4xl">
+            {formatNumbersForKPIs(totalTickets)}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="space-y-2">
             <li className="flex items-center justify-between gap-2">
               <span>Accepted</span>
-              <span>{accepted}</span>
+              <span>{formatNumbersForKPIs(accepted)}</span>
             </li>
             <li className="flex items-center justify-between gap-2">
               <span>Rejected</span>
-              <span>{rejected}</span>
+              <span>{formatNumbersForKPIs(rejected)}</span>
             </li>
           </ul>
         </CardContent>
@@ -135,14 +138,16 @@ export default async function KPIs({ searchParams }: Params) {
       <Card>
         <CardHeader className="h-full justify-between">
           <CardDescription>Number of AI Assignments</CardDescription>
-          <CardTitle className="text-4xl">{numberOfAIAssignments}</CardTitle>
+          <CardTitle className="text-4xl">
+            {formatNumbersForKPIs(numberOfAIAssignments)}
+          </CardTitle>
         </CardHeader>
       </Card>
       <Card>
         <CardHeader className="h-full justify-between">
           <CardDescription>Number of Manual Assignments</CardDescription>
           <CardTitle className="text-4xl">
-            {numberOfManualAssignments}
+            {formatNumbersForKPIs(numberOfManualAssignments)}
           </CardTitle>
         </CardHeader>
       </Card>
