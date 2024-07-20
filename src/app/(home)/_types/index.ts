@@ -7,6 +7,7 @@ export type Params = {
     assignment?: string;
     contact?: string;
     query_flag?: string;
+    confirmation_flag?: string;
   };
 };
 
@@ -22,4 +23,5 @@ export type Filters = {
   assignment?: string;
   contact?: string;
   queryFlag?: string;
+  confirmationFlag?: string;
 };

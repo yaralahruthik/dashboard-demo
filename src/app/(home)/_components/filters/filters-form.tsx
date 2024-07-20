@@ -13,6 +13,7 @@ import ContactMode from './contact-mode';
 import Priority from './priority';
 import TicketInput from './ticket-input';
 import QueryFlag from './query-flag';
+import ConfirmationRequired from './confirmation-required';
 
 const FiltersSchema = z
   .object({
@@ -25,6 +26,7 @@ const FiltersSchema = z
     assignment: z.string().trim().optional(),
     contact: z.string().trim().optional(),
     query_flag: z.string().trim().optional(),
+    confirmation_flag: z.string().trim().optional(),
   })
   .refine(
     (data) => {
@@ -68,6 +70,7 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
       assignment: getFilters('assignment') || '',
       contact: getFilters('contact') || '',
       query_flag: getFilters('query_flag') || '',
+      confirmation_flag: getFilters('confirmation_flag') || '',
     },
   });
 
@@ -99,6 +102,10 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
       params.set('query_flag', data.query_flag);
     }
 
+    if (data.confirmation_flag) {
+      params.set('confirmation_flag', data.confirmation_flag);
+    }
+
     applyFilters(params.toString());
 
     if (postApply) {
@@ -117,6 +124,7 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
       assignment: '',
       contact: '',
       query_flag: '',
+      confirmation_flag: '',
     });
     clearFilters();
   };
@@ -127,6 +135,7 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
         <DateRangePicker form={form} />
         <Priority form={form} />
         <QueryFlag form={form} />
+        <ConfirmationRequired form={form} />
         <TicketInput form={form} />
         <AssignedDepartment form={form} />
         <ContactMode form={form} />

@@ -26,6 +26,7 @@ export function getFiltersFromSearchParams(
     assignment: searchParams.assignment,
     contact: searchParams.contact,
     queryFlag: searchParams.query_flag,
+    confirmationFlag: searchParams.confirmation_flag,
   };
 }
 
@@ -80,6 +81,20 @@ function getQueryFlagSQL(queryFlag?: string | null) {
   }
 }
 
+function getConfirmationFlagSQL(confirmationFlag?: string | null) {
+  if (!confirmationFlag) {
+    return undefined;
+  }
+
+  if (confirmationFlag.toUpperCase() === 'YES') {
+    return sql`${usersQuery.predAssignmentManualFlag} is TRUE`;
+  }
+
+  if (confirmationFlag.toUpperCase() === 'NO') {
+    return sql`${usersQuery.predAssignmentManualFlag} is FALSE`;
+  }
+}
+
 export function constructFiltersSQL(filters: Filters) {
   const dateRangeSQL = getUserQueryDateRangeSQL(filters.dateRange);
   const prioritySQL = getPrioritySQL(filters.priority);
@@ -87,6 +102,7 @@ export function constructFiltersSQL(filters: Filters) {
   const assignmentSQL = getAssignmentSQL(filters.assignment);
   const contactSQL = getContactSQL(filters.contact);
   const queryFlagSQL = getQueryFlagSQL(filters.queryFlag);
+  const confirmationFlagSQL = getConfirmationFlagSQL(filters.confirmationFlag);
 
   return and(
     dateRangeSQL,
@@ -95,5 +111,6 @@ export function constructFiltersSQL(filters: Filters) {
     assignmentSQL,
     contactSQL,
     queryFlagSQL,
+    confirmationFlagSQL,
   );
 }
