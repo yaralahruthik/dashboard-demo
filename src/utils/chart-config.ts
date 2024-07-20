@@ -114,6 +114,20 @@ const CHART_CONFIG_CONTACT = {
       dark: `#2c7bb6`,
     },
   },
+  telegram: {
+    label: 'Telegram',
+    theme: {
+      light: '#0088cc',
+      dark: '#0077b5',
+    },
+  },
+  whatsapp: {
+    label: 'WhatsApp',
+    theme: {
+      light: '#25D366',
+      dark: '#128C7E',
+    },
+  },
 };
 
 export const CHART_CONFIG: ChartConfig = {
