@@ -13,6 +13,26 @@ import QueryTableRow from './query-table-row';
 import { getQueriesData } from './get-queries-data';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
+export const tableColumns: { header: string; key: string }[] = [
+  { header: 'No', key: 'index' },
+  { header: 'Ticket ID', key: 'ticketId' },
+  { header: 'Name', key: 'userName' },
+  { header: 'Contact', key: 'phoneNo' },
+  { header: 'Status', key: 'ticketStatus' },
+  { header: 'Is Query', key: 'isQueryFlag' },
+  { header: 'Customer Query', key: 'userQueryBody' },
+  { header: 'Query Received', key: 'userQueryDatetimeUTC' },
+  { header: 'Support Executive', key: 'executive' },
+  { header: 'Confirmation Required', key: 'predAssignmentManualFlag' },
+  { header: 'A.I Priority', key: 'predPriority' },
+  { header: 'A.I Assignment', key: 'predAssignment' },
+  { header: 'User Query Mode', key: 'userQueryMode' },
+  { header: 'Manual Priority', key: 'manualPriority' },
+  { header: 'Manual Assignment', key: 'manualAssignment' },
+  { header: 'Comments', key: 'comments' },
+  { header: '', key: 'actions' },
+];
+
 export default async function QueriesTable({ searchParams }: Params) {
   const filters = getFiltersFromSearchParams(searchParams);
 
@@ -28,17 +48,9 @@ export default async function QueriesTable({ searchParams }: Params) {
           <Table>
             <TableHeader className="sticky top-0 bg-secondary">
               <TableRow>
-                <TableHead>No</TableHead>
-                <TableHead>Ticket ID</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Executive</TableHead>
-                <TableHead>A.I Priority</TableHead>
-                <TableHead>A.I Assignment</TableHead>
-                <TableHead>User Query Mode</TableHead>
-                <TableHead>Manual Priority</TableHead>
-                <TableHead>Manual Assignment</TableHead>
-                <TableHead>Comments</TableHead>
-                <TableHead></TableHead>
+                {tableColumns.map((column) => (
+                  <TableHead key={column.key}>{column.header}</TableHead>
+                ))}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -47,6 +59,7 @@ export default async function QueriesTable({ searchParams }: Params) {
                   idx={idx + 1}
                   key={query.ticketId}
                   query={query}
+                  columns={tableColumns}
                 />
               ))}
             </TableBody>
