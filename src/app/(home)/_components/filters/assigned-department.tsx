@@ -51,11 +51,19 @@ export default function AssignedDepartment({ form }: AssignedDepartmentProps) {
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {data?.map((department) => (
-                  <SelectItem key={department.value} value={department.value!}>
-                    {convertUnderscoresToSpacesAndCapitalize(department.value!)}
-                  </SelectItem>
-                ))}
+                {data?.map(
+                  (department) =>
+                    department.value && (
+                      <SelectItem
+                        key={department.value}
+                        value={department.value}
+                      >
+                        {convertUnderscoresToSpacesAndCapitalize(
+                          department.value,
+                        )}
+                      </SelectItem>
+                    ),
+                )}
               </SelectContent>
             </Select>
           )}
