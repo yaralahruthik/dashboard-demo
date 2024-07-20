@@ -14,6 +14,7 @@ import Priority from './priority';
 import TicketInput from './ticket-input';
 import QueryFlag from './query-flag';
 import ConfirmationRequired from './confirmation-required';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const FiltersSchema = z
   .object({
@@ -131,7 +132,7 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <DateRangePicker form={form} />
         <Priority form={form} />
         <QueryFlag form={form} />

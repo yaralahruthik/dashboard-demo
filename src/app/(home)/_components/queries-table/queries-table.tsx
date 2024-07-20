@@ -9,9 +9,11 @@ import {
 import { Params } from '../../_types';
 import { getFiltersFromSearchParams } from '../../_utils';
 
-import QueryTableRow from './query-table-row';
-import { getQueriesData } from './get-queries-data';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { getQueriesData } from './get-queries-data';
+import QueryTableRow from './query-table-row';
+import MobileClearFilterButton from '../filters/clear-filters-button';
+import FiltersButtonWithSheet from '../filters/filters-button-with-sheet';
 
 export const tableColumns: { header: string; key: string }[] = [
   { header: 'No', key: 'index' },
@@ -40,8 +42,12 @@ export default async function QueriesTable({ searchParams }: Params) {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between gap-2">
         <CardTitle>All Queries</CardTitle>
+        <div className="flex items-center gap-2">
+          <MobileClearFilterButton />
+          <FiltersButtonWithSheet />
+        </div>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[800px]">
