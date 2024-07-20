@@ -22,6 +22,7 @@ type ChartProps = {
 export default function Chart({ dataPoints }: ChartProps) {
   const dataPointsWithFill = dataPoints.map((item) => ({
     ...item,
+    userQueryMode: convertSpacesToUnderscoresAndLowercase(item.userQueryMode),
     fill: `var(--color-${convertSpacesToUnderscoresAndLowercase(item.userQueryMode)})`,
   }));
 

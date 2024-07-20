@@ -25,6 +25,7 @@ type ChartProps = {
 export default function Chart({ dataPoints }: ChartProps) {
   const dataPointsWithFill = dataPoints.map((item) => ({
     ...item,
+    predAssignment: convertSpacesToUnderscoresAndLowercase(item.predAssignment),
     fill: `var(--color-${convertSpacesToUnderscoresAndLowercase(item.predAssignment)})`,
   }));
 
