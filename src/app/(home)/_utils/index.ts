@@ -25,6 +25,7 @@ export function getFiltersFromSearchParams(
     ticketId: searchParams.ticket_id,
     assignment: searchParams.assignment,
     contact: searchParams.contact,
+    queryFlag: searchParams.query_flag,
   };
 }
 
@@ -65,12 +66,34 @@ function getContactSQL(contact?: string | null) {
   return contact ? sql`${usersQuery.userQueryMode} = ${contact}` : undefined;
 }
 
+function getQueryFlagSQL(queryFlag?: string | null) {
+  if (!queryFlag) {
+    return undefined;
+  }
+
+  if (queryFlag.toUpperCase() === 'TRUE') {
+    return sql`${usersQuery.isQueryFlag} is TRUE`;
+  }
+
+  if (queryFlag.toUpperCase() === 'FALSE') {
+    return sql`${usersQuery.isQueryFlag} is FALSE`;
+  }
+}
+
 export function constructFiltersSQL(filters: Filters) {
   const dateRangeSQL = getUserQueryDateRangeSQL(filters.dateRange);
   const prioritySQL = getPrioritySQL(filters.priority);
   const ticketIdSQL = getTicketIdSQL(filters.ticketId);
   const assignmentSQL = getAssignmentSQL(filters.assignment);
   const contactSQL = getContactSQL(filters.contact);
+  const queryFlagSQL = getQueryFlagSQL(filters.queryFlag);
 
-  return and(dateRangeSQL, prioritySQL, ticketIdSQL, assignmentSQL, contactSQL);
+  return and(
+    dateRangeSQL,
+    prioritySQL,
+    ticketIdSQL,
+    assignmentSQL,
+    contactSQL,
+    queryFlagSQL,
+  );
 }

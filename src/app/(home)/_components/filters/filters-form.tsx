@@ -1,17 +1,18 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
-import DateRangePicker from './date-range-picker';
 import useDashboardFilters from '../../_hooks/use-dashboard-filters';
+import DateRangePicker from './date-range-picker';
 
-import Priority from './priority';
 import AssignedDepartment from './assigned-department';
 import ContactMode from './contact-mode';
+import Priority from './priority';
 import TicketInput from './ticket-input';
+import QueryFlag from './query-flag';
 
 const FiltersSchema = z
   .object({
@@ -23,6 +24,7 @@ const FiltersSchema = z
     ticket_id: z.string().trim().optional(),
     assignment: z.string().trim().optional(),
     contact: z.string().trim().optional(),
+    query_flag: z.string().trim().optional(),
   })
   .refine(
     (data) => {
@@ -65,6 +67,7 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
       ticket_id: getFilters('ticket_id') || '',
       assignment: getFilters('assignment') || '',
       contact: getFilters('contact') || '',
+      query_flag: getFilters('query_flag') || '',
     },
   });
 
@@ -92,6 +95,10 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
       params.set('contact', data.contact);
     }
 
+    if (data.query_flag) {
+      params.set('query_flag', data.query_flag);
+    }
+
     applyFilters(params.toString());
 
     if (postApply) {
@@ -109,6 +116,7 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
       ticket_id: '',
       assignment: '',
       contact: '',
+      query_flag: '',
     });
     clearFilters();
   };
@@ -118,6 +126,7 @@ export default function FiltersForm({ postApply }: FiltersFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <DateRangePicker form={form} />
         <Priority form={form} />
+        <QueryFlag form={form} />
         <TicketInput form={form} />
         <AssignedDepartment form={form} />
         <ContactMode form={form} />

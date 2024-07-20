@@ -12,7 +12,8 @@ export default function useDashboardFilters() {
     searchParams.get('priority') ||
     searchParams.get('ticket_id') ||
     searchParams.get('assignment') ||
-    searchParams.get('contact');
+    searchParams.get('contact') ||
+    searchParams.get('query_flag');
 
   const clearFilters = React.useCallback(() => {
     replace(`${pathname}`, {

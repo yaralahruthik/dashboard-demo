@@ -6,6 +6,7 @@ export type Params = {
     ticket_id?: string;
     assignment?: string;
     contact?: string;
+    query_flag?: string;
   };
 };
 
@@ -20,4 +21,5 @@ export type Filters = {
   ticketId?: string;
   assignment?: string;
   contact?: string;
+  queryFlag?: string;
 };
