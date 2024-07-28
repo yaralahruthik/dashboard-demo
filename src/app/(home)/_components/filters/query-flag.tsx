@@ -26,7 +26,7 @@ export default function QueryFlag({ form }: QueryFlagProps) {
       name="query_flag"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Is Query</FormLabel>
+          <FormLabel>Is Request</FormLabel>
           <Select onValueChange={field.onChange} value={field.value}>
             <FormControl>
               <SelectTrigger>

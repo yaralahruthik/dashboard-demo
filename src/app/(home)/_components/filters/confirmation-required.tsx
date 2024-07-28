@@ -28,11 +28,11 @@ export default function ConfirmationRequired({
       name="confirmation_flag"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Confirmation Required</FormLabel>
+          <FormLabel>Intervention Required</FormLabel>
           <Select onValueChange={field.onChange} value={field.value}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder="Is Confirmation Required" />
+                <SelectValue placeholder="Is Intervention Required" />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
